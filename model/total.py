@@ -95,7 +95,7 @@ app = Flask(__name__)
 def hello():
     return "deep learning server is running 💗"
 
-@app.route('/api', methods=['POST'])
+@app.route('/api/emotion', methods=['POST'])
 def predict():
     args = request.json
     sentence = args['content']
@@ -149,22 +149,28 @@ def keyword():
     args = request.json
     sentence = args['content']
     sentence = parse.unquote(sentence, 'utf8')
-    twitter(sentence)
+    print(type(sentence))
 
-@app.route('/api/analysis/keywords/visuals', methods=['POST'])
+    return twitter(sentence)
+
+@app.route('/api/analysis/keywords/images', methods=['POST'])
 def word_visual():
     args = request.json
     sentence = args['content']
     sentence = parse.unquote(sentence, 'utf8')
     sentence_list = sentence.split("\n")
     img_wordcloud = word_cloud(sentence_list)
-    img_wordcloud.to_file('test.jpg')
+    #img_wordcloud.to_file('test.jpg')
+
+    response = upload(img_wordcloud)
+    return response
+
+def upload(img_wordcloud):
     img_binary = BytesIO()
     img_wordcloud.to_image().save(img_binary, format='PNG')
     img_binary.seek(0)
     response = make_response(img_binary.getvalue())
     response.headers['Content-Type'] = 'image/png'
-
     return response
 
 
