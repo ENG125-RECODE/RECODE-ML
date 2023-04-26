@@ -160,7 +160,7 @@ def word_visual():
     sentence = parse.unquote(sentence, 'utf8')
     sentence_list = sentence.split("\n")
     img_wordcloud = word_cloud(sentence_list)
-    #img_wordcloud.to_file('test.jpg')
+    #img_wordcloud.to_file('test1.jpg')
 
     response = upload(img_wordcloud)
     return response
