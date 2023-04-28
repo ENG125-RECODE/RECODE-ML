@@ -23,6 +23,8 @@ import json
 # kobert
 from kobert.utils import get_tokenizer
 from kobert.pytorch_kobert import get_pytorch_kobert_model
+from kiwipiepy import Kiwi
+kiwi = Kiwi()
 
 
 device = torch.device('cpu')
@@ -158,7 +160,10 @@ def word_visual():
     args = request.json
     sentence = args['content']
     sentence = parse.unquote(sentence, 'utf8')
-    sentence_list = sentence.split("\n")
+    sents = kiwi.split_into_sents(sentence)
+    sents_list = [sent.text for sent in sents]
+    sentence_list = list(sents_list)
+    #sentence_list = sentence.split("\n")
     img_wordcloud = word_cloud(sentence_list)
     #img_wordcloud.to_file('test1.jpg')
 
